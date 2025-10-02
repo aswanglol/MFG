@@ -1,0 +1,18 @@
+# VS Junk
+.vs/
+vcpkg_installed/
+
+# Build Artifacts
+Debug/
+Release/
+
+x64/
+
+# User Files
+*.user
+
+# Include Raylib-cpp
+!**raylib-cpp
+!vcpkg.json
+!vcpkg-configuration.json
+packages/
