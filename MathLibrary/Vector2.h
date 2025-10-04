@@ -1,4 +1,5 @@
 #pragma once
+#include "Utils.h"
 
 namespace MathClasses
 {
@@ -33,10 +34,10 @@ namespace MathClasses
 		static float Dot(const Vector2& first, const Vector2& second) { return first.Dot(second); }
 		Vector2 Perp() const { return { -y,x }; }
 
-		void Normalise();
-		void SafeNormalise();
-		Vector2 Normalised() const;
-		Vector2 SafeNormalised() const;
+		void Normalise() { float mag = this->Magnitude(); x /= mag; y /= mag; }
+		void SafeNormalise() { if (this->Magnitude() != 0) { Normalise(); } return; }
+		Vector2 Normalised() const { Vector2 copy = *this; copy.Normalise(); return copy; }
+		Vector2 SafeNormalised() const { if (this->Magnitude() != 0) { Vector2 copy = *this; copy.SafeNormalise(); return copy; }
 
 
 	//	Vector2 operator +(const Vector2& rhs) const;
@@ -49,7 +50,7 @@ namespace MathClasses
 	//	Vector2& operator /=(float rhs);
 	//	bool operator == (const Vector2& rhs) const;
 	//	bool operator != (const Vector2& rhs) const;
-	//	bool Equals(const Vector2& rhs, float Tolerance = MAX_FLOAT_DELTA) const;
+		bool Equals(const Vector2 & rhs, float Tolerance = MAX_FLOAT_DELTA) const { Vector2 distance =  }
 	//	std::string ToString() const;
 	//	operator float* ();
 	//	operator const float* () const;
@@ -60,7 +61,7 @@ namespace MathClasses
 	//	Vector2 operator -() const;
 	//	float& operator [](int dim);
 	//	const float& operator [](int dim) const;
-	//	float MagnitudeSqr() const;
+		float MagnitudeSqr() const { return ((x * x) + (y * y)); }
 	//	float Distance(const Vector2& other) const;
 	//	float DistanceSqr(const Vector2& other) const;
 	//	static float Distance(const Vector2& start, const Vector2& end);
