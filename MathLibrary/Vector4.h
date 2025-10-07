@@ -1,4 +1,6 @@
 #pragma once
+#include "Vector3.h"
+#include "Utils.h"
 
 
 namespace MathClasses
@@ -26,63 +28,49 @@ namespace MathClasses
 		 * @brief Returns the magnitude of this Vector
 		 * @return The magnitude of this Vector.
 		 */
-		float Magnitude() const;
+		float Magnitude() const {
+			if (w == 0) {
+				return sqrtf((x * x) + (y * y) + (z * z));
+			}
+			return (w * sqrtf((x * x) + (y * y) + (z * z)));
+		}
+		
+		float Dot(const Vector4& rhs) const {
+			return ((x * rhs.x) + (y * rhs.y) + (z * rhs.z) + (w * rhs.w));
+		}
 
-		/**
-		 * @brief Returns the dot product of these vectors.
-		 * @param rhs The other Vector.
-		 * @return The dot product of this Vector and the other.
-		 */
-		float Dot(const Vector4& rhs) const;
-
-		/* @todo static float Dot(const Vector4& first, const Vector4& second) */
-
-		/**
-		 * Returns a Vector that is perpendicular to both this Vector and the other.
-		 *
-		 * This is the implementation for Vector3 objects. The W component is
-		 * not considered and will be set to 0.
-		 *
-		 * @param rhs The other Vector.
-		 * @details A Vector that is perpendicular to both this Vector and the other.
-		 */
-		Vector4 Cross(const Vector4& rhs) const;
+		Vector4 Cross(const Vector4& rhs) const {
+			Vector4 temp = *this;
+			temp.x = (y * temp.z) - (z * temp.y);
+			temp.y = (z * temp.x) - (x * temp.z);
+			temp.z = (x * temp.y) - (y * temp.x);
+		}
 
 		/* @todo static Vector3 Cross(const Vector4& first, const Vector4& second) */
 
-		/**
-		 * Normalises this vector, modifying its length to be 1 while retaining the same direction.
-		 *
-		 * @details Does NOT check for zero-length vectors, which are invalid to normalise.
-		 *
-		 * See also: SafeNormalise().
-		 */
-		void Normalise();
+		void Normalise() {
+			float mag = this->Magnitude();
+			x = (x / mag) * w; y = (y / mag) * w; z = (z / mag) * w; w = (w / mag) * w;
+		}
 
-		/**
-		 * Safely normalises this vector, modifying its length to be 1 while retaining the same direction
-		 * unless its length is zero, in which case its members will be set to zero.
-		 *
-		 * @details Does NOT check for zero-length vectors, which are invalid to normalise.
-		 *
-		 * See also: SafeNormalise().
-		 */
-		void SafeNormalise();
+		void SafeNormalise() {
+			if (this->Magnitude() != 0) {
+				Normalise();
+			}
+			return;
+		}
 
-		/**
-		 * Returns a normalized copy of this vector.
-		 *
-		 * See also: SafeNormalised()
-		 * @return A normalized copy.
-		 */
-		Vector4 Normalised() const;
+		Vector4 Normalised() const {
+			Vector4 temp = *this;
+			temp.Normalise();
+			return temp;
+		}
 
-		/**
-		 * Returns a normalized copy of this vector or returns it as-is if too small to n
-		 *
-		 * @return A normalized copy if possible.
-		 */
-		Vector4 SafeNormalised() const;
+		Vector4 SafeNormalised() const {
+			Vector4 temp = *this;
+			temp.SafeNormalise();
+			return temp;
+		}
 
 		/**
 		 * Returns a Vector containing the sum of each component added to
@@ -182,14 +170,20 @@ namespace MathClasses
 		 * @param Tolerence The maximum difference between any component being compared.
 		 * @return True if approximately equal, otherwise false.
 		 */
-		bool Equals(const Vector4& rhs, float Tolerance = MAX_FLOAT_DELTA) const;
+		bool Equals(const Vector4& rhs, float Tolerance = MAX_FLOAT_DELTA) const {
+			Vector4 distance = { x - rhs.x,y - rhs.y,z - rhs.z,w - rhs.w };
+			distance.Absolute();
+			return((distance.x < Tolerance) && (distance.y < Tolerance) && (distance.z < Tolerance) && (distance.w < Tolerance));
+		}
 
 		/**
 		 * Returns this Vector as a formatted string.
 		 *
 		 * @return A comma separated Vector with its components.
 		 */
-		std::string ToString() const;
+		std::string ToString() const {
+			return "x: " + std::to_string(x) + ", y: " + std::to_string(y) + ", z: " + std::to_string(z) + ", w: " + std::to_string(w);
+		}
 
 		//
 		// OPTIONAL
