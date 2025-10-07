@@ -165,6 +165,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Vector2Tests.cpp" />
+    <ClCompile Include="Vector3Tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MathLibraryTests.h" />

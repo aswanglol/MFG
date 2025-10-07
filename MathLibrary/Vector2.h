@@ -1,5 +1,6 @@
 #pragma once
 #include "Utils.h"
+#include <string>
 
 namespace MathClasses
 {
@@ -53,6 +54,12 @@ namespace MathClasses
 		}
 		Vector2 SafeNormalised() const {
 			if (this->Magnitude() != 0) { Vector2 copy = *this; copy.SafeNormalise(); return copy; }
+			return Vector2();
+		}
+		Vector2 Absolute() {
+			if (x < 0) { x *= -1; }
+			if (y < 0) { y *= -1; }
+			return *this;
 		}
 		Vector2 operator +(const Vector2& rhs) const {
 			Vector2 vector = { x, y };
@@ -104,26 +111,43 @@ namespace MathClasses
 		bool Equals(const Vector2 & rhs, float Tolerance = MAX_FLOAT_DELTA) const { 
 			Vector2 distance = { x - rhs.x, y - rhs.y };
 			distance.Absolute();
+			return ((distance.x < Tolerance) && (distance.y < Tolerance));
 		}
 		std::string ToString() const {
 			return "x: " + std::to_string(x) + ", y: " + std::to_string(y);
 		}
 		operator float* () {
-			return data;
+			return v;
 		}
 		operator const float* () const {
-			return data;
+			return v;
 		}
-	//	Vector2 operator *(const Vector2& rhs) const; rhs.y);
-	//	Vector2& operator *=(const Vector2& rhs);
-	//	Vector2 operator /(const Vector2& rhs) const;
-	//	Vector2& operator /=(const Vector2& rhs);
+		Vector2 operator *(const Vector2& rhs) const {
+			Vector2 temp = { x, y };
+			temp.x *= rhs.x; temp.y *= rhs.y;
+			return temp;
+		}
+		Vector2& operator *=(const Vector2& rhs) {
+			Vector2 temp = { x, y };
+			x *= rhs.x; y *= rhs.y;
+			return *this;
+		}
+		Vector2 operator /(const Vector2& rhs) const {
+			Vector2 temp = { x, y };
+			temp.x /= rhs.x; temp.y /= rhs.y;
+			return temp;
+		}
+		Vector2& operator /=(const Vector2& rhs) {
+			Vector2 temp = { x, y };
+			temp.x /= rhs.x; temp.y /= rhs.y;
+			return temp;
+		}
 	//	Vector2 operator -() const;
 		float& operator [](int dim) {
-			return data[dim];
+			return v[dim];
 		}
 		const float& operator [](int dim) const {
-			return data[dim];
+			return v[dim];
 		}
 		float MagnitudeSqr() const { 
 			return ((x * x) + (y * y)); 

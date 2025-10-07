@@ -115,8 +115,7 @@ namespace MathClasses
 		Vector3& operator /=(const Vector3& rhs);
 		Vector3 operator -() const;
 
-		float& operator [](int dim);/*rn v[dim];
-		}*/
+		float& operator [](int dim);
 		const float& operator [](int dim) const;
 		
 		float MagnitudeSqr() const {
