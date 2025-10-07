@@ -83,50 +83,21 @@ namespace MathClasses
 			return *this;
 		}
 
-		Vector3 operator +(const Vector3& rhs) const;
-
-		Vector3& operator +=(const Vector3& rhs);
-
-		Vector3 operator -(const Vector3& rhs) const;
-
-		Vector3& operator -=(const Vector3& rhs);
-
-		Vector3 operator *(float rhs) const;
-
-		Vector3& operator *=(float rhs);
-
-		Vector3 operator /(float rhs) const;
-
-		Vector3 operator /=(float rhs);
-
-		bool operator == (const Vector3& rhs) const;
-
-		bool operator != (const Vector3& rhs) const;
+		//	Vector3 operator +(const Vector3& rhs) const;
+		//	Vector3& operator +=(const Vector3& rhs);
+		//	Vector3 operator -(const Vector3& rhs) const;
+		//	Vector3& operator -=(const Vector3& rhs);
+		//	Vector3 operator *(float rhs) const;
+		//	Vector3& operator *=(float rhs);
+		//	Vector3 operator /(float rhs) const;
+		//	Vector3 operator /=(float rhs);
+		//	bool operator == (const Vector3& rhs) const;
+		//	bool operator != (const Vector3& rhs) const;
 
 		bool Equals(const Vector3& rhs, float Tolerance = MAX_FLOAT_DELTA) const {
 			Vector3 distance = { x - rhs.x, y - rhs.y, z - rhs.z };
 			distance.Absolute();
 			return ((distance.x < Tolerance) && (distance.y < Tolerance) && (distance.z < Tolerance));
-		}
-
-		float Distance(const Vector3& other) const {
-			return (*this - other).Magnitude();
-		}
-
-		float DistanceSqr(const Vector3& other) const {
-			return (*this - other).Magnitude();
-		}
-
-		static float Distance(const Vector3& start, const Vector3& end) {
-			return start.Distance(end);
-		}
-
-		static float DistanceSqr(const Vector3& start, const Vector3& end) {
-			return start.DistanceSqr(end);
-		}
-
-		float AngleBetween(const Vector3& other) const {
-			return std::acosf(Dot(other) / (Magnitude() * other.Magnitude()));
 		}
 
 		std::string ToString() const {
@@ -135,97 +106,50 @@ namespace MathClasses
 
 		operator Vector2() const { return Vector2(x, y); }
 
-		/**
-		 * OPTIONAL
-		 */
-
-		 /**
-		 * Treats this Vector as an array of floats containing its components.
-		 */
+		// optional
 		operator float* ();
-
-		/**
-		 * Treats this Vector as an const array of floats containing its components.
-		 */
 		operator const float* () const;
-
-		/**
-		 * Returns a new Vector where each component is multiplied by the component from the other vector
-		 *
-		 * @param rhs The other vector.
-		 * @return The Vector with each components multiplied by the component from the other vector.
-		 */
 		Vector3 operator *(const Vector3& rhs) const;
-
-		/**
-		 * Assigns and returns this Vector where each component is multiplied by
-		 * the component from the other vector
-		 *
-		 * @param rhs The other Vector.
-		 * @return Reference to this Vector's components multiplied by the component from the other vector.
-		 */
 		Vector3& operator *=(const Vector3& rhs);
-
-		/**
-		 * Returns a new Vector where each component is divided by the component from the other vector
-		 *
-		 * @param The other Vector.
-		 * @return A copy of this Vector's components divided by the component from the other vector.
-		 */
 		Vector3 operator /(const Vector3& rhs) const;
-
-		/**
-		 * Assigns and returns this Vector after dividing it by the other vector
-		 *
-		 * @param rhs The other vector.
-		 * @return Reference to this Vector's components divided by the component from the other vector.
-		 */
 		Vector3& operator /=(const Vector3& rhs);
-
-		/**
-		 * Returns a copy of this Vector after negating its components.
-		 *
-		 * @param rhs The other vector.
-		 * @return A copy of this Vector after negating its components.
-		 */
 		Vector3 operator -() const;
 
-		/**
-		 * Returns a reference to one of the components of this Vector when
-		 * accessed as though it were an array of floats.
-		 *
-		 * @param dim The index or dimension (X would be 0, Y would be 1...)
-		 * @return Reference to the specified element.
-		 */
-		float& operator [](int dim);rn v[dim];
+		float& operator [](int dim);/*rn v[dim];
+		}*/
+		const float& operator [](int dim) const;
+		
+		float MagnitudeSqr() const {
+			return ((x * x) + (y * y) + (z * z));
+		}
+		
+		float Distance(const Vector3& other) const {
+			return (*this - other).Magnitude();
+		}
+		
+		float DistanceSqr(const Vector3& other) const {
+			return (*this - other).Magnitude();
+		}
+		
+		static float Distance(const Vector3& start, const Vector3& end) {
+			return start.Distance(end);
+		}
+		
+		static float DistanceSqr(const Vector3& start, const Vector3& end) {
+			return start.DistanceSqr(end);
+		}
+		
+		float AngleBetween(const Vector3& other) const {
+			return std::acosf(Dot(other) / (Magnitude() * other.Magnitude()));
+		}
+
+	};
+
+
+	inline Vector3 operator*(float scalar, const Vector3& vector) {
+		Vector3 temp = vector * scalar;
+		return temp;
 	}
+}
 
-	/**
-	 * Returns a constant reference to one of the components of this Vector when
-	 * accessed as though it were an array of floats.
-	 *
-	 * @param dim The index or dimension (X would be 0, Y would be 1...)
-	 * @return Constant reference to the specified element.
-	 */
-	const float& operator [](int dim) const;
-
-	/**
-	 * Returns the Squared Magnitude of this Vector.
-	 *
-	 * This is used to avoid or skip a potentially expensive square-root
-	 * function call.
-	 *
-	 * @return The squared magnitude of this Vector.
-	 */
-	float MagnitudeSqr() const;
-
-};
-
-/**
- * Returns a new Vector where each component is scaled by the scalar value
- * @param scalar The scalar.
- * @param vector The Vector.
- * @return The scaled Vector.
- */
-inline Vector3 operator*(float scalar, const Vector3& vector);
 
