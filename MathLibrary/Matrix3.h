@@ -1,4 +1,6 @@
 #pragma once
+#include "Vector2.h"
+#include "Vector3.h"
 
 namespace MathClasses
 {
@@ -21,47 +23,35 @@ namespace MathClasses
 		 */
 		Matrix3();
 
-		/**
-		 * Initializes members to the given values
-		 *
-		 * @param inM1 Value for M1
-		 * @param inM2 Value for M2
-		 * @param inM3 Value for M3
-		 * @param inM4 Value for M4
-		 * @param inM5 Value for M5
-		 * @param inM6 Value for M6
-		 * @param inM7 Value for M7
-		 * @param inM8 Value for M8
-		 * @param inM9 Value for M9
-		 */
-		Matrix3(float inM1, float inM2, float inM3, float inM4, float inM5, float inM6, float inM7, float inM8, float inM9);
+		Matrix3(float inM1, float inM2, float inM3, float inM4, float inM5, float inM6, float inM7, float inM8, float inM9) {
+			m1 = inM1; m2 = inM2; m3 = inM3; m4 = inM4; m5 = inM5; m6 = inM6; m7 = inM7; m8 = inM8; m9 = inM9;
+		}
 
-		/**
-		 * Initializes a matrix based on a 9-element array
-		 *
-		 * @details Does not perform bounds checking.
-		 *
-		 * @param inArr
-		 */
-		Matrix3(float* inArr);
+		Matrix3(float* inArr) {
+			for (int i = 0; i < 9; i++) {
+				v[i] = inArr[i];
+			}
+		}
 
-		/**
-		 * Initializes and returns an identity matrix.
-		 *
-		 * @return The identity matrix.
-		 */
-		static Matrix3 MakeIdentity();
+		static Matrix3 MakeIdentity() {
+			return { 1.0f,0,0,0,1.0f,0,0,0,1.0f };
+		}
 
-		/**
-		 * Multiplies this matrix against the given Matrix.
-		 *
-		 * Performs MATRIX multiplication, not just multiplying each member by
-		 * the other.
-		 *
-		 * @param rhs The other matrix.
-		 * @return The product of multiplying the 3x3 matrix by a 3x3.
-		 */
-		Matrix3 operator *(Matrix3 rhs) const;
+		Matrix3 operator *(Matrix3 rhs) const {
+			Matrix3 temp = *this;
+			Vector3 r1 = { m1,m4,m7 };
+			Vector3 r2 = { m2,m5,m8 };
+			Vector3 r3 = { m3,m6,m9 };
+			Vector3 c1 = { rhs.m1,rhs.m2,rhs.m3 };
+			Vector3 c2 = { rhs.m4,rhs.m5,rhs.m6 };
+			Vector3 c3 = { rhs.m7,rhs.m8,rhs.m9 };
+
+			temp.m1 = r1.Dot(c1); temp.m4 = r1.Dot(c2); temp.m7 = r1.Dot(c3);
+			temp.m2 = r2.Dot(c1); temp.m5 = r2.Dot(c2); temp.m8 = r2.Dot(c3);
+			temp.m3 = r3.Dot(c1); temp.m6 = r3.Dot(c2); temp.m9 = r3.Dot(c3);
+
+			return temp;
+		}
 
 		/**
 		 * Assigns and returns the result of this Matrix multiplied against the

@@ -16,7 +16,7 @@ namespace Microsoft::VisualStudio::CppUnitTestFramework
 	 */
 
 	using MathClasses::Vector2;
-	//using MathClasses::Vector3;
+	using MathClasses::Vector3;
 	//using MathClasses::Vector4;
 	//using MathClasses::Matrix3;
 	//using MathClasses::Matrix4;

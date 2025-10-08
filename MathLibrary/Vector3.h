@@ -83,7 +83,7 @@ namespace MathClasses
 			return *this;
 		}
 
-		//	Vector3 operator +(const Vector3& rhs) const;
+		Vector3 operator +(const Vector3& rhs) const;
 		//	Vector3& operator +=(const Vector3& rhs);
 		//	Vector3 operator -(const Vector3& rhs) const;
 		//	Vector3& operator -=(const Vector3& rhs);
@@ -115,29 +115,28 @@ namespace MathClasses
 		Vector3& operator /=(const Vector3& rhs);
 		Vector3 operator -() const;
 
-		float& operator [](int dim);
-		const float& operator [](int dim) const;
+		float& operator [](int dim) {
+
+		}
+		const float& operator [](int dim) const {
+
+		}
 		
 		float MagnitudeSqr() const {
 			return ((x * x) + (y * y) + (z * z));
 		}
-		
 		float Distance(const Vector3& other) const {
 			return (*this - other).Magnitude();
 		}
-		
 		float DistanceSqr(const Vector3& other) const {
 			return (*this - other).Magnitude();
 		}
-		
 		static float Distance(const Vector3& start, const Vector3& end) {
 			return start.Distance(end);
 		}
-		
 		static float DistanceSqr(const Vector3& start, const Vector3& end) {
 			return start.DistanceSqr(end);
 		}
-		
 		float AngleBetween(const Vector3& other) const {
 			return std::acosf(Dot(other) / (Magnitude() * other.Magnitude()));
 		}
